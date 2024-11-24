@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="card mx-4">
+        <div class="card-body p-4">
+          <form #form="ngForm" (ngSubmit)="Login()" novalidate>
+            <div class="imgcontainer">
+              <img src="img_avatar2.png" alt="Avatar" class="avatar">
+            </div>
+
+            <div class="container">
+              <label for="email"><b>Email</b></label>
+              <input type="text" [(ngModel)]="formData.email" name="email" placeholder="Enter Email" id="email">
+
+              <label for="password"><b>Password</b></label>
+              <input type="password" [(ngModel)]="formData.password" name="password" placeholder="Enter Password" id="password">
+
+              <button type="submit">Login</button>
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.rememberMe" checked="checked" id="rememberMe" name="rememberMe"> Remember me
+              </label>
+            </div>
+
+            <div class="container" style="background-color:#f1f1f1">
+              <button type="button" class="cancelbtn">Cancel</button>
+              <span class="psw">Forgot <a href="#">password?</a></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

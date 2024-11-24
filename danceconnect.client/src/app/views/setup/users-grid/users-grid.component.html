@@ -1,0 +1,23 @@
+<div class="container mt-4">
+  <h2>Dance Learners</h2>
+
+  <!-- Filter Input -->
+  <div class="form-group mb-3">
+    <input type="text" class="form-control" [(ngModel)]="searchTerm" placeholder="Search by title...">
+  </div>
+
+  <!-- Card List -->
+  <div class="row">
+    <div class="col-md-4" *ngFor="let user of users">
+
+      <!--Make a different card component-->
+      <div class="card mb-4" style="width: 18rem;">
+        <img *ngIf="user.profilePic" [src]="user.profilePic" class="card-img-top" alt="Card image">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.name }}</h5>
+          <p class="card-text">{{ user.email }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<form>
+  <div class="mb-3 row">
+    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+    <div class="col-xs-3 col-sm-auto">
+      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" />
+    </div>
+  </div>
+</form>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">S.N.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Date</th>
+      <th scope="col">Message</th>
+      <th scope="col">Is Replied</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (contactMessage of contactMessages; track contactMessage.email; let i = $index) {
+    <tr>
+      <th scope="row">{{ i + 1 }}</th>
+      <td><ngb-highlight [result]="contactMessage.name" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="contactMessage.email" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="contactMessage.date" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="contactMessage.message" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="contactMessage.isMessageResponded ? 'YES' : 'Not Yet'" [term]="filter.value" /></td>
+      <td>
+        <a [routerLink]="['/contact-us', contactMessage.id]" class="btn btn-primary">View Details</a>
+      </td>
+    </tr>
+    } @empty {
+    <tr>
+      <td colspan="8" style="text-align: center">No messages found</td>
+    </tr>
+    }
+  </tbody>
+</table>

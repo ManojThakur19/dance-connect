@@ -1,0 +1,54 @@
+<form>
+  <div class="mb-3 row">
+    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+    <div class="col-xs-3 col-sm-auto">
+      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" />
+    </div>
+  </div>
+</form>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th scope="col">S.N.</th>
+      <th scope="col">Profile</th>
+      <th scope="col">Name</th>
+      <th scope="col">DOB</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Status</th>
+      <th scope="col">City</th>
+      <th scope="col">Province</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (user of users$; track user.name; let i = $index) {
+    <tr>
+      <th scope="row">{{ i + 1 }}</th>
+      <td>
+        <img [src]="user.profilePic"
+             [alt]="user.name"
+             class="me-2"
+             style="width: 35px" />
+      </td>
+      <td><ngb-highlight [result]="user.name" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.dob" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.gender" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.phone" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.email" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.profileStatus" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.city" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="user.province" [term]="filter.value" /></td>
+      <td>
+        <a href="#">View Details</a>
+      </td>
+    </tr>
+    } @empty {
+    <tr>
+      <td colspan="4" style="text-align: center">No users found</td>
+    </tr>
+    }
+  </tbody>
+</table>

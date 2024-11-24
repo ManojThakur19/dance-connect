@@ -1,0 +1,56 @@
+<form>
+  <div class="mb-3 row">
+    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+    <div class="col-xs-3 col-sm-auto">
+      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" />
+    </div>
+  </div>
+</form>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">S.N.</th>
+      <th scope="col">Profile</th>
+      <th scope="col">Name</th>
+      <th scope="col">DOB</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Hourly Rate</th>
+      <th scope="col">Status</th>
+      <th scope="col">City</th>
+      <th scope="col">Province</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (instructor of instructors; track instructor.name; let i = $index) {
+    <tr>
+      <th scope="row">{{ i + 1 }}</th>
+      <td>
+        <img [src]="instructor.profilePic"
+             [alt]="'Instructor Profile Photo'"
+             class="me-2"
+             style="width: 20px" />
+      </td>
+      <td><ngb-highlight [result]="instructor.name" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.dob" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.gender" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.phone" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.email" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.hourlyRate" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.profileStatus" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.city" [term]="filter.value" /></td>
+      <td><ngb-highlight [result]="instructor.province" [term]="filter.value" /></td>
+      <td>
+        <a href="#">View Details</a>
+      </td>
+    </tr>
+    } @empty {
+    <tr>
+      <td colspan="8" style="text-align: center">No instructors found</td>
+    </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,16 @@
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+.container {
+  margin-top: 20px;
+}
+
+.form-group {
+  max-width: 300px;
+  margin: 0 auto;
+}

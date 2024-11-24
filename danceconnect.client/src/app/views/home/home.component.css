@@ -1,0 +1,166 @@
+/* You can add global styles to this file, and also import other style files */
+/** {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #111;
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 10px 20px;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+  nav ul li {
+    margin: 0 15px;
+  }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+      nav ul li a:hover {
+        color: #f00;
+      }*/
+
+.hero-section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*background-image: url('././assets/images/logo.jpg');*/
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 64px;
+  color: #f00;
+}
+
+.hero-content p {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.btn-primary {
+  padding: 15px 35px;
+  background-color: #f00;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+  .btn-primary:hover {
+    background-color: #b30000;
+  }
+
+.about-section, .features-section, .contact-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+  .features-section h2 {
+    margin-bottom: 40px;
+  }
+
+  .features-section .feature-cards {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+
+.card {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 5px;
+  width: 30%;
+}
+
+  .card h3 {
+    color: #f00;
+    margin-bottom: 10px;
+  }
+
+.contact-section form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-section input, .contact-section textarea {
+  width: 50%;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #222;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.btn-secondary {
+  padding: 10px 30px;
+  background-color: #444;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+  .btn-secondary:hover {
+    background-color: #666;
+  }
+
+footer {
+  background-color: #000;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Media Query for Responsive Design */
+@media only screen and (max-width: 768px) {
+  .features-section .feature-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .contact-section input, .contact-section textarea {
+    width: 90%;
+  }
+
+  .hero-content h1 {
+    font-size: 48px;
+  }
+
+  .hero-content p {
+    font-size: 20px;
+  }
+}

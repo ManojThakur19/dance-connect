@@ -1,0 +1,70 @@
+
+<app-header></app-header>
+
+<section id="home" class="hero-section">
+  <div class="hero-content">
+    <h1>Welcome to Dance Connect</h1>
+    <p>Your gateway to mastering dance with expert mentorship and personalized learning.</p>
+    <a href="#signup" class="btn-primary">Join Now</a>
+  </div>
+</section>
+
+<section id="about" class="about-section">
+  <h2>About Dance Connect</h2>
+  <p>Dance Connect is the premier platform designed to bridge the gap between aspiring dancers and professional mentors. Whether you're looking to enhance your dance skills or be discovered by event organizers, Dance Connect is the place to start your journey.</p>
+</section>
+
+<section id="features" class="features-section">
+  <h2>Why Choose Dance Connect?</h2>
+  <div class="feature-cards">
+    <div class="card">
+      <h3>Personalized Learning</h3>
+      <p>Access tailored lessons and get personalized feedback from professional mentors.</p>
+    </div>
+    <div class="card">
+      <h3>Talent Discovery</h3>
+      <p>Showcase your talent and be discovered by event organizers and dance professionals.</p>
+    </div>
+    <div class="card">
+      <h3>Secure Platform</h3>
+      <p>We ensure your data and identity are safe with robust verification processes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <h2>Contact Us</h2>
+  <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
+    <input type="text"
+           id="name"
+           name="name"
+           placeholder="Your Name"
+           class="form-control"
+           [(ngModel)]="contact.name"
+           #name="ngModel"
+           required />
+    <input type="email"
+           id="email"
+           name="email"
+           placeholder="Your Email"
+           class="form-control"
+           [(ngModel)]="contact.email"
+           #email="ngModel"
+           required />
+    <textarea id="message"
+              name="message"
+              placeholder="Your Message"
+              class="form-control"
+              [(ngModel)]="contact.message"
+              #message="ngModel"
+              required
+              rows="4">
+</textarea>
+    <button type="submit" class="btn-secondary" [disabled]="contactForm.invalid">
+      Send Message
+    </button>
+  </form>
+</section>
+
+<app-footer></app-footer>
+

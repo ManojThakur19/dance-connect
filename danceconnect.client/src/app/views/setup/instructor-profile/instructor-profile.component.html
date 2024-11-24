@@ -1,0 +1,102 @@
+<div class="container mt-4">
+  <h2>Instructor Profile Form</h2>
+
+  <!-- Profile Form -->
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+    <!-- User Information Row -->
+    <hr class="my-4">
+    <h5>Personal Information</h5>
+    <div class="row">
+      <div class="col-md-4 form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter your name">
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Gender</label>
+        <select class="form-control" formControlName="gender">
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" class="form-control" id="dob" formControlName="dob">
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" class="form-control" id="phone" formControlName="phone" placeholder="Enter phone number">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 form-group">
+        <label for="hourlyRate">Hourly Rate(CAD)</label>
+        <input type="text" class="form-control" id="hourlyRate" formControlName="hourlyRate" placeholder="Enter hourly rate">
+      </div>
+      <div class="col-md-4 form-group"></div>
+      <div class="col-md-4 form-group"></div>
+      <div class="col-md-4 form-group"></div>
+      </div>
+
+      <!-- Profile Picture Upload Row -->
+      <hr class="my-4">
+      <h5>Profile Picture & Video</h5>
+      <div class="row mt-3">
+        <div class="col-md-6 form-group file-upload-group">
+          <label for="profilePic">Profile Picture</label>
+          <input type="file" class="form-control-file" id="profilePic" formControlName="profilePic" (change)="onProfilePicChange($event)">
+        </div>
+        <div class="col-md-6 form-group file-upload-group">
+          <label for="identityDocument">Identity Document</label>
+          <input type="file" class="form-control-file" id="identityDocument" formControlName="identityDocument" (change)="onIdentityDocChange($event)">
+        </div>
+        <div class="col-md-6 form-group file-upload-group">
+          <label for="introVideo">Short Intro Video</label>
+          <input type="file" class="form-control-file" id="shortIntroVideo" formControlName="shortIntroVideo" (change)="onShortVideoChange($event)">
+        </div>
+      </div>
+
+      <!-- Profile Picture Preview -->
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <img *ngIf="profilePreview" [src]="profilePreview" alt="Profile Preview" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+        </div>
+      </div>
+
+      <hr class="my-4">
+      <h5>Address Information</h5>
+      <div class="row mt-3">
+        <div class="col-md-4 form-group">
+          <label for="street">Street</label>
+          <input type="text" class="form-control" id="street" formControlName="street">
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city" formControlName="city">
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="postalCode">Postal Code</label>
+          <input type="text" class="form-control" id="postalCode" formControlName="postalCode">
+        </div>
+
+        <div class="col-md-4 form-group">
+          <label for="province">Province</label>
+          <select class="form-control" formControlName="province">
+            <option value="">Select Province</option>
+            <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="my-4">
+      <div class="row mt-4">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid">Submit</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+</form>
+</div>
