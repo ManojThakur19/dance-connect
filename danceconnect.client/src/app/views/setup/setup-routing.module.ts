@@ -9,6 +9,7 @@ import { InstructorListComponent } from './instructor-list/instructor-list.compo
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorDetailComponent } from './instructor-detail/instructor-detail.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { InstrDetailAdminComponent } from './instr-detail-admin/instr-detail-admin.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
         component: InstructorListComponent
       },
       { path: 'instructor/:id', component: InstructorDetailComponent },
+      { path: 'instructor-admin/:id', component: InstrDetailAdminComponent },
       {
         path: 'instructor-profile',
         component: InstructorProfileComponent

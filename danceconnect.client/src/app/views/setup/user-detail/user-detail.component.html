@@ -1,41 +1,91 @@
+<!--<div class="container my-5">
+  <div class="card shadow">
+    <div class="row g-0">-->
+<!-- Profile Picture Section -->
+<!--<div class="col-md-3 text-center bg-light p-3">
+  <img [src]="user?.profilePic || 'assets/default-profile-pic.png'"
+       alt="{{ user?.name }}"
+       class="img-fluid rounded-circle mb-3"
+       style="max-height: 200px; object-fit: cover;" />
+  <h5>{{ user?.name }}</h5>
+  <p class="text-muted">{{ user?.profileStatus }}</p>
+</div>-->
+<!-- user Details and Video Section -->
+<!--<div class="col-md-9">
+  <div class="card-body">-->
+<!-- Personal Information -->
+<!--<h5>Personal Information</h5>
+<div class="row">
+  <div class="col-md-6">
+    <p><strong>Gender:</strong> {{ user?.gender || 'N/A' }}</p>
+    <p><strong>Date of Birth:</strong> {{ user?.dob }}</p>
+    <p><strong>Phone:</strong> {{ user?.phone }}</p>
+  </div>
+  <div class="col-md-6">
+    <p><strong>Email:</strong> {{ user?.email }}</p>
+  </div>
+</div>-->
+<!-- Address Section -->
+<!--<h5 class="mt-4">Address</h5>
+          <p>
+            {{ user?.street }}<br />
+            {{ user?.city || 'N/A' }}, {{ user?.province || 'N/A' }}<br />
+            {{ user?.postalCode || 'N/A' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->
+
 <div class="container my-5">
   <div class="card shadow">
     <div class="row g-0">
       <!-- Profile Picture Section -->
       <div class="col-md-3 text-center bg-light p-3">
-        <img [src]="instructor?.profilePic || 'assets/default-profile-pic.png'"
-             alt="{{ instructor?.name }}"
+        <img [src]="user?.profilePic || 'assets/default-profile-pic.png'"
+             alt="{{ user?.name }}"
              class="img-fluid rounded-circle mb-3"
              style="max-height: 200px; object-fit: cover;" />
-        <h5>{{ instructor?.name }}</h5>
-        <p class="text-muted">{{ instructor?.profileStatus }}</p>
+        <h5>{{ user?.name }}</h5>
+        <p class="text-muted">{{ user?.profileStatus }}</p>
       </div>
 
-      <!-- Instructor Details and Video Section -->
+      <!-- User Details and Approval Section -->
       <div class="col-md-9">
         <div class="card-body">
+          <!-- Approval Buttons in the top-right corner -->
+          <div class="text-end mb-3">
+            <button class="btn btn-success" [disabled]="user?.profileStatus === 'Approved'" (click)="approveProfile()">Approve</button>
+            <button class="btn btn-danger" [disabled]="user?.profileStatus === 'Declined'" (click)="declineProfile()">Decline</button>
+            <button class="btn btn-primary" (click)="downloadIdentityDocument()">Download Docs</button>
+          </div>
+
           <!-- Personal Information -->
           <h5>Personal Information</h5>
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Gender:</strong> {{ instructor?.gender || 'N/A' }}</p>
-              <p><strong>Date of Birth:</strong> {{ instructor?.dob }}</p>
-              <p><strong>Phone:</strong> {{ instructor?.phone }}</p>
+              <p><strong>Gender:</strong> {{ user?.gender || 'N/A' }}</p>
+              <p><strong>Date of Birth:</strong> {{ user?.dob }}</p>
+              <p><strong>Phone:</strong> {{ user?.phone }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Email:</strong> {{ instructor?.email }}</p>
+              <p><strong>Email:</strong> {{ user?.email }}</p>
             </div>
           </div>
 
           <!-- Address Section -->
           <h5 class="mt-4">Address</h5>
           <p>
-            {{ instructor?.street }}<br />
-            {{ instructor?.city || 'N/A' }}, {{ instructor?.province || 'N/A' }}<br />
-            {{ instructor?.postalCode || 'N/A' }}
+            {{ user?.street }}<br />
+            {{ user?.city || 'N/A' }}, {{ user?.province || 'N/A' }}<br />
+            {{ user?.postalCode || 'N/A' }}
           </p>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+

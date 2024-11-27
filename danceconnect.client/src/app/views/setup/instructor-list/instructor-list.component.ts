@@ -3,11 +3,12 @@ import { InstructorService } from '../instructor-profile/instructor.service';
 import { Instructor, InstructorResponse } from '../instructor-profile/instructor';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-instructor-list',
   standalone: true,
-  imports: [ReactiveFormsModule, NgbHighlight],
+  imports: [ReactiveFormsModule, NgbHighlight, RouterModule],
   templateUrl: './instructor-list.component.html',
   styleUrl: './instructor-list.component.css'
 })

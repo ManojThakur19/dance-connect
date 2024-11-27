@@ -5,8 +5,10 @@ using DanceConnect.Server.Models;
 using DanceConnect.Server.Response.Dtos;
 using DanceConnect.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO.Compression;
 
 namespace DanceConnect.Server.Controllers
 {
@@ -159,7 +161,7 @@ namespace DanceConnect.Server.Controllers
                     Phone = instructorDto.Phone,
                     Dob = instructorDto.Dob,
                     HourlyRate = instructorDto.HourlyRate,
-                    ProfileStatus = Enums.ProfileStatus.ProfileCompleted,
+                    ProfileStatus = Enums.ProfileStatus.ProfileCreated,
                     ProfilePic = profileFileName,
                     IdentityDocument = identityFileName,
                     IntroVideo = shortVideoFileName,
@@ -202,6 +204,145 @@ namespace DanceConnect.Server.Controllers
                     //Add Email Sent Record to DB
                 }
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("approve/{instructorId:int}")]
+        [Authorize]
+        public async Task<IActionResult> ApproveInstructor(int instructorId)
+        {
+            try
+            {
+                //Admin can only approve
+                var adminId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
+
+                if (string.IsNullOrEmpty(instructorId.ToString()))
+                {
+                    return Unauthorized("CustomerId claim is missing.");
+                }
+
+                var instructor = await _instructorService.ApproveInstructorAsync(instructorId);
+                var instructorResponse = new InstructorResponseDto()
+                {
+                    Id = instructor.InstructorId,
+                    Name = instructor.Name,
+                    Gender = instructor.Gender,
+                    Dob = instructor.Dob,
+                    Phone = instructor.Phone,
+                    Email = instructor.AppUser?.Email,
+                    AverageRating = instructor.Ratings.Count() > 0 ? instructor.Ratings.Average(x => x.RatingValue) : 0,
+                    ProfileStatus = instructor.ProfileStatus.ToString(),
+                    ProfilePic = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{instructor.ProfilePic}",
+                    IdentityDocument = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{instructor.IdentityDocument}",
+                    ShortIntroVideo = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/videos/{instructor.IntroVideo}",
+                    Street = instructor.Street,
+                    City = instructor.City,
+                    PostalCode = instructor.PostalCode,
+                    Province = instructor.Province,
+                };
+
+                return Ok(instructorResponse);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("decline/{instructorId:int}")]
+        [Authorize]
+        public async Task<IActionResult> DeclineInstructor(int instructorId)
+        {
+            try
+            {
+                //Admin can only approve
+                var adminId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
+
+                if (string.IsNullOrEmpty(instructorId.ToString()))
+                {
+                    return Unauthorized("CustomerId claim is missing.");
+                }
+
+                var instructor = await _instructorService.DeclineInstructorAsync(instructorId);
+                var instructorResponse = new InstructorResponseDto()
+                {
+                    Id = instructor.InstructorId,
+                    Name = instructor.Name,
+                    Gender = instructor.Gender,
+                    Dob = instructor.Dob,
+                    Phone = instructor.Phone,
+                    Email = instructor.AppUser?.Email,
+                    AverageRating = instructor.Ratings.Count() > 0 ? instructor.Ratings.Average(x => x.RatingValue) : 0,
+                    ProfileStatus = instructor.ProfileStatus.ToString(),
+                    ProfilePic = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{instructor.ProfilePic}",
+                    IdentityDocument = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{instructor.IdentityDocument}",
+                    ShortIntroVideo = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/videos/{instructor.IntroVideo}",
+                    Street = instructor.Street,
+                    City = instructor.City,
+                    PostalCode = instructor.PostalCode,
+                    Province = instructor.Province,
+                };
+
+                return Ok(instructorResponse);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("download-docs/{instructorId:int}")]
+        [Authorize]
+        public async Task<IActionResult> DownloadIdentityDocument(int instructorId)
+        {
+            try
+            {
+                //Admin can only approve
+                var adminId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
+
+                if (string.IsNullOrEmpty(instructorId.ToString()))
+                {
+                    return Unauthorized("CustomerId claim is missing.");
+                }
+
+                var instructor = await _instructorService.GetInstructorByIdAsync(instructorId);
+
+                var filePaths = new List<string>
+                {
+                Path.Combine(_environment.WebRootPath, "uploads", instructor.ProfilePic),
+                Path.Combine(_environment.WebRootPath, "uploads", instructor.IdentityDocument),
+                Path.Combine(_environment.WebRootPath, "uploads/videos", instructor.IntroVideo)
+                };
+                filePaths.ForEach(x =>
+                {
+                    if (!System.IO.File.Exists(x))
+                    {
+                        NotFound("Identity document not found.");
+                    }
+                });
+
+                // Create a temporary ZIP file
+                var zipFilePath = Path.Combine(Path.GetTempPath(), "UserDocuments.zip");
+
+                using (var zipArchive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+                {
+                    foreach (var filePath in filePaths)
+                    {
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            zipArchive.CreateEntryFromFile(filePath, Path.GetFileName(filePath));
+                        }
+                    }
+                }
+
+                // Return the ZIP file as a download
+                var fileBytes = System.IO.File.ReadAllBytes(zipFilePath);
+                System.IO.File.Delete(zipFilePath); // Clean up the temporary file
+                return File(fileBytes, "application/zip", "UserDocuments.zip");
             }
             catch (Exception ex)
             {

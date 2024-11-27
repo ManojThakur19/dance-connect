@@ -2,8 +2,8 @@
 {
     public enum ProfileStatus
     {
-        NewlyCreated,
-        ProfileCompleted,
+        Registered,
+        ProfileCreated,
         Approved,
         Declined
     }

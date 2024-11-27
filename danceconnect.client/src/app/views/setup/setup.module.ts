@@ -16,6 +16,7 @@ import { FooterComponent } from '../../layout/footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
 import { InstructorDetailComponent } from './instructor-detail/instructor-detail.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { InstrDetailAdminComponent } from './instr-detail-admin/instr-detail-admin.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     UsersGridComponent,
     InstructorGridComponent,
     InstructorDetailComponent,
-    UserDetailComponent 
+    UserDetailComponent,
+    InstrDetailAdminComponent 
   ],
   imports: [
     CommonModule,

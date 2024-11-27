@@ -9,7 +9,8 @@ import { UserService } from '../user-profile/user.service';
   styleUrl: './user-detail.component.css'
 })
 export class UserDetailComponent {
-  instructor: UserResponse | null = null;
+  user: UserResponse | null = null;
+  userId: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -18,13 +19,48 @@ export class UserDetailComponent {
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('id');
+    this.userId = userId ? parseInt(userId) : 0;
     if (userId) {
       this.userService.getUserById(parseInt(userId)).subscribe({
         next: (data) => {
-          this.instructor = data;
+          this.user = data;
         },
         error: (err) => console.error('Error fetching user:', err),
       });
     }
   }
+
+  approveProfile() {
+    this.userService.approveUser(this.userId).subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => console.error('Error fetching user:', err),
+    });
+  }
+
+  declineProfile() {
+    this.userService.declineUser(this.userId).subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => console.error('Error fetching user:', err),
+    });
+  }
+
+  downloadIdentityDocument() {
+    const userId = this.user?.id;  
+    this.userService.downloadDocs(this.userId).subscribe((response: Blob) => {
+      //const contentDisposition = response.get('Content-Disposition') || '';
+      //const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+      //const filename = filenameMatch ? filenameMatch[1] : 'downloaded_file';
+
+      const blob = new Blob([response], { type: response.type });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "Identity-docs";
+      link.click();
+    });
+  }
+
 }

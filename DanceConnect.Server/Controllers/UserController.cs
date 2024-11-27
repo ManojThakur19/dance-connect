@@ -3,6 +3,7 @@ using DanceConnect.Server.Entities;
 using DanceConnect.Server.Response.Dtos;
 using DanceConnect.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DanceConnect.Server.Controllers
@@ -21,7 +22,7 @@ namespace DanceConnect.Server.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetUsers()
         {
             var userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
@@ -81,7 +82,7 @@ namespace DanceConnect.Server.Controllers
             return Ok(userResponse);
         }
 
-        [HttpPost(Name = "Save User")]
+        [HttpPost]
         [Authorize]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> AddUser([FromForm] UserDto userDto)
@@ -134,7 +135,7 @@ namespace DanceConnect.Server.Controllers
                     Gender = userDto.Gender,
                     Phone = userDto.Phone,
                     Dob = userDto.Dob,
-                    ProfileStatus = Enums.ProfileStatus.ProfileCompleted,
+                    ProfileStatus = Enums.ProfileStatus.ProfileCreated,
                     ProfilePic = profilePicFileName,
                     IdentityDocument = identityDocFileName,
                     Street = userDto.Street,
@@ -150,6 +151,134 @@ namespace DanceConnect.Server.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpPost("approve/{userId:int}")]
+        [Authorize]
+        public async Task<IActionResult> ApproveUser(int userId)
+        {
+            try
+            {
+                //Admin can only approve
+                var adminId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
+
+                if (string.IsNullOrEmpty(userId.ToString()))
+                {
+                    return Unauthorized("CustomerId claim is missing.");
+                }
+
+                var user = await _userService.ApproveUserAsync(userId);
+                var userResponse = new UserResponseDto()
+                {
+                    Id = user.UserId,
+                    Name = user.Name,
+                    Gender = user.Gender,
+                    Dob = user.Dob,
+                    Phone = user.Phone,
+                    Email = user.AppUser?.Email,
+                    ProfileStatus = user.ProfileStatus.ToString(),
+                    ProfilePic = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.ProfilePic}",
+                    IdentityDocument = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.IdentityDocument}",
+                    Street = user.Street,
+                    City = user.City,
+                    PostalCode = user.PostalCode,
+                    Province = user.Province,
+                };
+
+                return Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("decline/{userId:int}")]
+        [Authorize]
+        public async Task<IActionResult> DeclineUser(int userId)
+        {
+            try
+            {
+                //Admin can only approve
+                var adminId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
+
+                if (string.IsNullOrEmpty(userId.ToString()))
+                {
+                    return Unauthorized("CustomerId claim is missing.");
+                }
+
+                var user = await _userService.DeclineUserAsync(userId);
+                var userResponse = new UserResponseDto()
+                {
+                    Id = user.UserId,
+                    Name = user.Name,
+                    Gender = user.Gender,
+                    Dob = user.Dob,
+                    Phone = user.Phone,
+                    Email = user.AppUser?.Email,
+                    ProfileStatus = user.ProfileStatus.ToString(),
+                    ProfilePic = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.ProfilePic}",
+                    IdentityDocument = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.IdentityDocument}",
+                    Street = user.Street,
+                    City = user.City,
+                    PostalCode = user.PostalCode,
+                    Province = user.Province,
+                };
+
+                return Ok(userResponse);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("download-docs/{userId}")]
+        [Authorize]
+        public async Task<IActionResult> DownloadIdentityDocument(int userId)
+        {
+            try
+            {
+                //Admin can only approve
+                var adminId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
+
+                if (string.IsNullOrEmpty(userId.ToString()))
+                {
+                    return Unauthorized("CustomerId claim is missing.");
+                }
+
+                var user = await _userService.GetUserByIdAsync(userId);
+
+                string filePath = Path.Combine(_environment.WebRootPath, "uploads", $"{user.IdentityDocument}");
+
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return NotFound("Identity document not found.");
+                }
+
+                var fileBytes = System.IO.File.ReadAllBytes(filePath);
+                var fileExtension = Path.GetExtension(filePath).ToLower();
+
+                string mimeType = fileExtension switch
+                {
+                    ".pdf" => "application/pdf",
+                    ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    ".doc" => "application/msword",
+                    ".jpg" => "image/jpeg",
+                    ".jpeg" => "image/jpeg",
+                    ".png" => "image/png",
+                    ".txt" => "text/plain",
+                    _ => "application/octet-stream" // Default fallback
+                };
+
+                var fileName = Path.GetFileName(filePath);
+                return File(fileBytes, mimeType, fileName);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
     }

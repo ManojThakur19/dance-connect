@@ -41,4 +41,16 @@ export class InstructorService {
   sendEmail(item: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/send-email`, item);
   }
+
+  approveInstructor(id: number): Observable<InstructorResponse> {
+    return this.http.post<InstructorResponse>(`${this.apiUrl}/${this.endpoint}/approve/${id}`, {});
+  }
+
+  declineInstructor(id: number): Observable<InstructorResponse> {
+    return this.http.post<InstructorResponse>(`${this.apiUrl}/${this.endpoint}/decline/${id}`, {});
+  }
+
+  downloadDocs(id: number) {
+    return this.http.get(`${this.apiUrl}/${this.endpoint}/download-docs/${id}`, { responseType: 'blob' })
+  }
 }

@@ -29,6 +29,18 @@ export class UserService {
     return this.http.put<UserResponse>(`${this.apiUrl}/${this.endpoint}/${id}`, item);
   }
 
+  approveUser(id: number): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/${this.endpoint}/approve/${id}`, {});
+  }
+
+  declineUser(id: number): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/${this.endpoint}/decline/${id}`, {});
+  }
+
+  downloadDocs(id: number) {
+    return this.http.get(`${this.apiUrl}/${this.endpoint}/download-docs/${id}`, { responseType: 'blob' })
+  }
+
   deleteUser(id: number): Observable<UserResponse> {
     return this.http.delete<UserResponse>(`${this.apiUrl}/${this.endpoint}/${id}`);
   }

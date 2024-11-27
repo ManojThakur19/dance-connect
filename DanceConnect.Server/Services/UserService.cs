@@ -30,5 +30,36 @@ namespace DanceConnect.Server.Services
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public Task<User> UpdateUserAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<User> DeclineUserAsync(int id)
+        {
+            var user = await GetUserByIdAsync(id);
+            if (user == null)
+            {
+                throw new Exception("User does not found");
+            }
+            user.ProfileStatus = Enums.ProfileStatus.Declined;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User> ApproveUserAsync(int id)
+        {
+            var user = await GetUserByIdAsync(id);
+            if (user == null)
+            {
+                throw new Exception("User does not found");
+            }
+            user.ProfileStatus = Enums.ProfileStatus.Approved;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
     }
 }

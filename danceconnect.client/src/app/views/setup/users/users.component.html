@@ -42,7 +42,7 @@
       <td><ngb-highlight [result]="user.city" [term]="filter.value" /></td>
       <td><ngb-highlight [result]="user.province" [term]="filter.value" /></td>
       <td>
-        <a href="#">View Details</a>
+        <a [routerLink]="['/set-up/user', user.id]" class="btn btn-primary">See More</a>
       </td>
     </tr>
     } @empty {
