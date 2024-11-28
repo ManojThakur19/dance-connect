@@ -45,8 +45,12 @@
             <button class="btn btn-primary"
                     [disabled]="!instructor?.email"
                     (click)="open(content)">
-              Send Email
+              Send Emails
             </button>
+          </div>
+          <!-- Chat With Instructor-->
+          <div class="mt-4">
+            <a [routerLink]="['/chat', instructor?.id]" class="btn btn-primary">Chat With Me</a>
           </div>
 
           <!-- Address Section -->

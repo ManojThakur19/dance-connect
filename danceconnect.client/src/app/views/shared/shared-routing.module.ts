@@ -4,12 +4,15 @@ import { SharedComponent } from './shared.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ContactUsDetailComponent } from './contact-us-detail/contact-us-detail.component';
 import { ContactUsListComponent } from './contact-us-list/contact-us-list.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   {
     path: '',
     component: SharedComponent,
     children: [
+      { path: 'chat', component: ChatComponent },
+      { path: 'chat/:id', component: ChatComponent },
       {
         path: 'contact-us',
         component: ContactUsComponent

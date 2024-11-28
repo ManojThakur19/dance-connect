@@ -1,4 +1,5 @@
 ﻿using DanceConnect.Server.Entities;
+using DanceConnect.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,5 +16,6 @@ namespace DanceConnect.Server.DataContext
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<ContactUs> Contacts { get; set; }
+        public DbSet<ChatMessage> Messages { get; set; }
     }
 }

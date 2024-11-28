@@ -14,6 +14,7 @@ import { JwtTokenInterceptor } from '../../common/jwt-token.interceptor';
 import { ContactUsDetailComponent } from './contact-us-detail/contact-us-detail.component';
 import { RouterModule } from '@angular/router';
 import { ContactUsListComponent } from './contact-us-list/contact-us-list.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ContactUsListComponent } from './contact-us-list/contact-us-list.compon
     FooterComponent,
     RatingComponent,
     ContactUsListComponent,
-    ContactUsDetailComponent
+    ContactUsDetailComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
