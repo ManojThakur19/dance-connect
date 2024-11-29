@@ -68,6 +68,7 @@ namespace DanceConnect.Server.Controllers
                     Dob = x.Dob,
                     Phone = x.Phone,
                     Email = x.AppUser?.Email,
+                    HourlyRate = x.HourlyRate,
                     AverageRating = x.Ratings.Count() > 0 ? x.Ratings.Average(x => x.RatingValue) : 0,
                     ProfileStatus = x.ProfileStatus.ToString(),
                     ProfilePic = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{x.ProfilePic}",

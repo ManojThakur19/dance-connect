@@ -23,7 +23,7 @@ namespace DanceConnect.Server.Entities
         [NotMapped]
         public bool IsMessageResponded
         {
-            get => MessageResponse is not null || MessageResponse != string.Empty;
+            get => MessageResponse is not null;
         }
 
         [NotMapped]

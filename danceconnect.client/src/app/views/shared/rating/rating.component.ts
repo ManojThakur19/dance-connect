@@ -11,7 +11,6 @@ export class RatingComponent {
   @Output() ratingChanged = new EventEmitter<number>();
 
   onRateChanged(event: any) {
-    console.log('RATE CHANGED', event);
     this.ratingChanged.emit(event);
   }
 }
