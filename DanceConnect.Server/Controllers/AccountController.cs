@@ -90,33 +90,54 @@ namespace DanceConnect.Server.Controllers
                                       .AddExpiry(1)
                                       .Build();
 
-                bool isAdmin = user.User is null && user.Instructor is null;
+                //if((user.UserType == UserType.User || user.UserType == UserType.Instructor) && (user.User is null && user.Instructor is null)){
+                //    //Yet to create the profile
+                //    return BadRequest($"Please Complete the profile first!");
+                //}
+
+                bool isAdmin = user.UserType == UserType.Admin;
                 string userName = string.Empty;
                 string phone = string.Empty;
                 string profilePhoto = string.Empty;
+                bool profileCompleted = true;
+                int id = 0;
 
                 if (isAdmin) {
                     userName = "Admin";
+                    phone = "3828852737";
+                    profilePhoto = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/193f93b0-ec6d-4431-aaed-1fbc4580bfad.jpg";
                 }
                 else
                 {
-                    userName = user.UserType == UserType.User ? user.User?.Name : user.Instructor?.Name;
-                    phone = user.UserType == UserType.User ? user.User?.Phone : user.Instructor?.Phone;
-                    profilePhoto = user.UserType == UserType.User ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.User?.ProfilePic}" :
-                        $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.Instructor?.ProfilePic}";
-
+                    if(user.User is null && user.Instructor is null)
+                    {
+                        userName = user.Email;
+                        phone = "";
+                        profilePhoto = "";
+                        id = 0;
+                        profileCompleted = false;
+                    }
+                    else
+                    {
+                        userName = user.UserType == UserType.User ? user.User?.Name : user.Instructor?.Name;
+                        phone = user.UserType == UserType.User ? user.User?.Phone : user.Instructor?.Phone;
+                        profilePhoto = user.UserType == UserType.User ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.User?.ProfilePic}" :
+                            $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.Instructor?.ProfilePic}";
+                        id = user.UserType == UserType.User ? user.User.UserId : user.Instructor.InstructorId;
+                    }
                 }
                 var loginResponse = new LoginResponse()
                 {
                     IdentityId = user.Id,
-                    Id = user.UserType == UserType.User ? user.User.UserId : user.Instructor.InstructorId,
+                    Id = id,
                     IsAdmin = isAdmin,
                     Name = userName,
                     Email = user.Email,
                     Phone = phone,
                     Role = user.UserType.ToString(),
                     ProfilePhoto = profilePhoto,
-                    Token = token.Value
+                    Token = token.Value,
+                    IsProfileCompleted = profileCompleted
                 };
                 return Ok(loginResponse);
             }

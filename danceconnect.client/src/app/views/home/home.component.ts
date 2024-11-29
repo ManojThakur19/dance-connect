@@ -12,6 +12,9 @@ export class HomeComponent {
   constructor(private contactUsService: ContactUsService) { }
 
   onSubmit(contactForm: any) {
+    if (!contactForm.valid) {
+      alert('Please fill out all the information!');
+    }
     if (contactForm.valid) {
       this.contactUsService.saveContact(this.contact).subscribe(
         (response) => {

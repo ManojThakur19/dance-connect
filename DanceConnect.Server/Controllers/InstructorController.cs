@@ -32,6 +32,7 @@ namespace DanceConnect.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetInstructors([FromQuery] string? searchTerm,
                                                         [FromQuery] string? gender,
                                                         [FromQuery] string? city,

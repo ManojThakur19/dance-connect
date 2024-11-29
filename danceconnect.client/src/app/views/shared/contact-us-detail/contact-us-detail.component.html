@@ -11,17 +11,18 @@
         </div>
         <div class="mb-3">
           <label for="response" class="form-label"><strong>Your Response:</strong></label>
-          <textarea
-            id="response"
-            class="form-control"
-            name="response"
-            rows="5"
-            required
-            [(ngModel)]="response"
-          ></textarea>
+          <textarea id="response"
+                    class="form-control"
+                    name="response"
+                    rows="5"
+                    required
+                    [(ngModel)]="response"></textarea>
         </div>
         <button type="submit" class="btn btn-success" [disabled]="!questionForm.valid">
           Send Response
+        </button>
+        <button type="button" class="btn btn-warning" [disabled]="questionForm.valid" (click)="onCancel()">
+          Cancel
         </button>
       </form>
     </div>

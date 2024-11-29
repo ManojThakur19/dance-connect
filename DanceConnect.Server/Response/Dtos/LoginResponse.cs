@@ -12,5 +12,6 @@
         public string? ProfilePhoto { get; set; }
         public string? Token { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsProfileCompleted { get; set; } = true;
     }
 }

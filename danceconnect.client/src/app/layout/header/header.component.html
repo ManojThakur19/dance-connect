@@ -4,14 +4,23 @@
   </div>
   <nav>
     <ul ngbNav #nav="ngbNav" [activeId]="2" class="nav-tabs justify-content-center">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a routerLink="/home">Home</a></li>
+
+      <li><a routerLink="/set-up/instructor-grids">Find Instructors</a></li>
+      <li><a routerLink="/set-up/user-grids">Find Users</a></li>
+      <li><a *ngIf="isAuthenticated" routerLink="/set-up/instructors">Instructors</a></li>
+      <li><a *ngIf="isAdmin" routerLink="/set-up/users">Users</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/contact-us/list">User Queries</a></li>
+
       <li *ngIf="!isAuthenticated"><a routerLink="/auth/register">Register</a></li>
       <li *ngIf="!isAuthenticated"><a routerLink="/auth/login" class="btn-primary">Login</a></li>
+
       <li ngbDropdown class="nav-item" role="presentation" *ngIf="isAuthenticated">
         <button type="button" class="nav-link" ngbDropdownToggle>{{user?.name}}</button>
         <div ngbDropdownMenu>
           <a (click)="viewProfile()" ngbDropdownItem class="btn-primary">View Profile</a>
+          <a *ngIf="!user?.isProfileCompleted && user?.role =='User'" routerLink="/set-up/user-profile" ngbDropdownItem class="btn-primary">Complete Profile</a>
+          <a *ngIf="!user?.isProfileCompleted && user?.role =='Instructor'" routerLink="/set-up/instructor-profile" ngbDropdownItem class="btn-primary">Complete Profile</a>
           <a routerLink="/auth/reset-password" ngbDropdownItem class="btn-primary">Reset-Password</a>
           <div class="dropdown-divider"></div>
           <a (click)="logout()" ngbDropdownItem class="btn-primary">Log Out</a>

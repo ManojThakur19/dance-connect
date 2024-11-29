@@ -37,10 +37,26 @@ export class LoginComponent {
           }
           else {
             this.router.navigate([this.returnUrl]);
+            //if (!data.isProfileCompleted) {
+
+            //  if (data.role == "User") {
+            //    this.router.navigate(['/set-up/user-profile']);
+            //  }
+            //  else {
+            //    this.router.navigate(['/set-up/instructor-profile']);
+            //  }
+            //}
+            //else {
+            //  this.router.navigate([this.returnUrl]);
+            //}
           }
         },
         error => {
           this.isLoading = false;
         });
+  }
+
+  onCancel() {
+    this.router.navigate([this.returnUrl]);
   }
 }

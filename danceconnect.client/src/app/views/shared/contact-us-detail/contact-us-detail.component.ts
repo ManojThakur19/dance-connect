@@ -55,5 +55,9 @@ export class ContactUsDetailComponent {
         });
       }
       this.response = '';
-    }
+  }
+
+  onCancel() {
+    this.router.navigate(['/contact-us/list']);
+  }
   }

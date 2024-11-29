@@ -60,7 +60,7 @@
               required
               rows="4">
 </textarea>
-    <button type="submit" class="btn-secondary" [disabled]="contactForm.invalid">
+    <button type="submit" class="btn-secondary" [disabled]="!contactForm.valid">
       Send Message
     </button>
   </form>

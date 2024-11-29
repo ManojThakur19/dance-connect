@@ -20,3 +20,8 @@
   object-fit: cover; 
   width: 100%;
 }
+
+.input-group {
+  max-width: 500px; /* Example: limit the width */
+  margin: auto; /* Example: center align */
+}

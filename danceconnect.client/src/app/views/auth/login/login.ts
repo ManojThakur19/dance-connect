@@ -21,4 +21,5 @@ export interface LoginResponse {
   profilePhoto: string;
   token: string;
   isAdmin: boolean;
+  isProfileCompleted: boolean;
 }

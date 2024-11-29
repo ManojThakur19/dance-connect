@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated?: boolean;
+  isAdmin?: boolean;
   user: LoginResponse | null = null;
   returnUrl: string = '';
   constructor(private loginService: LoginService,
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
       if (parsedUser && parsedUser.token) {
         this.user = parsedUser;
         this.isAuthenticated = true;
+        this.isAdmin = parsedUser.isAdmin;
         this.cdr.detectChanges();
       }
     }
@@ -42,8 +44,11 @@ export class HeaderComponent implements OnInit {
 
     if (role == "User") {
       this.router.navigate(['/set-up/user', this.user?.id]);
-    } else {
+    } else if (role == "Instructor") {
       this.router.navigate(['/set-up/instructor', this.user?.id]);
+    }
+    else {
+      //See no profile
     }
   }
 

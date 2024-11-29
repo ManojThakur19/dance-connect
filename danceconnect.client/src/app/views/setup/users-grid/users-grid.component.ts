@@ -11,12 +11,14 @@ import { UserService } from '../user-profile/user.service';
 export class UsersGridComponent implements OnInit {
 
   users: UserResponse[] = [];
+  filteredUsers: UserResponse[] = [];
   searchTerm: string = '';
   constructor(private _userService: UserService) { }
 
   ngOnInit(): void {
     this._userService.getUsers().subscribe(usrs => {
       this.users = usrs;
+      this.filteredUsers = usrs;
       console.log('USERS', usrs);
     })
   }
@@ -25,5 +27,12 @@ export class UsersGridComponent implements OnInit {
     return this.users.filter(item =>
       item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
+  }
+
+  searchUsers() {
+    this.filteredUsers = this.users.filter(item =>
+      item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    return this.filteredUsers;
   }
 }
