@@ -10,3 +10,15 @@ export class Login {
   password: string;
   rememberMe: boolean;
 }
+
+export interface LoginResponse {
+  id: number;
+  identityId: number;
+  name: string;
+  phone: string;
+  email: string;
+  role: string;
+  profilePhoto: string;
+  token: string;
+  isAdmin: boolean;
+}

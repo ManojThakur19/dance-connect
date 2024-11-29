@@ -36,7 +36,7 @@
             <div class="col-md-6">
               <p><strong>Email:</strong> {{ instructor?.email }}</p>
               <p><strong>Hourly Rate:</strong> ${{ instructor?.hourlyRate }}</p>
-              <p><strong>Average Ratings:</strong> {{ instructor?.averageRating }}</p>
+              <p><strong>Average Ratings:</strong> {{ instructor?.averageRating | number : '1.2-2' }}</p>
             </div>
           </div>
 

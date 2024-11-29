@@ -14,8 +14,8 @@ export class InstructorService {
 
   constructor(private http: HttpClient) { }
 
-  getInstructors(): Observable<InstructorResponse[]> {
-    return this.http.get<InstructorResponse[]>(`${this.apiUrl}/${this.endpoint}`);
+  getInstructors(filters?: any): Observable<InstructorResponse[]> {
+    return this.http.get<InstructorResponse[]>(`${this.apiUrl}/${this.endpoint}`, { params: filters });
   }
 
   getInstructorById(id: number): Observable<InstructorResponse> {

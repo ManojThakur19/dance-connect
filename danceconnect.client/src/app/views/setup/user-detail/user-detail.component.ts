@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserResponse } from '../user-profile/user';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../user-profile/user.service';
+import { LoginResponse } from '../../auth/login/login';
 
 @Component({
   selector: 'app-user-detail',
@@ -11,11 +12,21 @@ import { UserService } from '../user-profile/user.service';
 export class UserDetailComponent {
   user: UserResponse | null = null;
   userId: number = 0;
+  isAdmin: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService
-  ) { }
+  ) {
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      var parsedUser = JSON.parse(currentUser) as LoginResponse;
+
+      if (parsedUser) {
+        this.isAdmin = parsedUser.isAdmin;
+      }
+    }
+  }
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('id');

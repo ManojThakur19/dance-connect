@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<!--<div class="container mt-4">
   <h2>Instructor List</h2>
 
   <div class="form-group mb-3">
@@ -18,4 +18,73 @@
       </div>
     </div>
   </div>
+</div>-->
+
+<div class="container mt-4">
+  <h2>Instructors</h2>
+
+  <!-- Search Input -->
+
+  <div class="input-group mb-3">
+    <input type="text"
+           class="form-control"
+           [(ngModel)]="searchTerm"
+           placeholder="Search by name..." />
+    <button class="btn btn-primary"
+            type="button"
+            (click)="searchInstructor()">
+      Search
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <select class="form-select"
+              [(ngModel)]="gender">
+        <option value="">All Genders</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="city"
+             placeholder="Filter by City" />
+    </div>
+    <div class="col-md-3">
+      <select class="form-select"
+              [(ngModel)]="province">
+        <option value="">All Provinces</option>
+        <option *ngFor="let province of provinces" [value]="province">
+          {{ province }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button style="margin-right:5px;" class="btn btn-primary" (click)="applyFilters()">Apply Filters</button>
+      <button class="btn btn-light" (click)="clearFilters()">Clear</button>
+    </div>
+  </div>
+
+  <!-- Instructor List -->
+  <div class="row">
+    <div class="col-md-4" *ngFor="let instructor of filteredInstructors">
+      <div class="card mb-4" style="width: 18rem;">
+        <img *ngIf="instructor.profilePic"
+             [src]="instructor.profilePic"
+             class="card-img-top"
+             alt="Card image" />
+        <div class="card-body">
+          <h5 class="card-title">{{ instructor.name }}</h5>
+          <p class="card-text">{{ instructor.email }}</p>
+          <p class="card-text">{{ instructor.averageRating | number : '1.2-2' }}</p>
+          <a [routerLink]="['/set-up/instructor', instructor.id]"
+             class="btn btn-primary">See More</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+

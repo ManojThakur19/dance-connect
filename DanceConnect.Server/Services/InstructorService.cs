@@ -12,6 +12,11 @@ namespace DanceConnect.Server.Services
         {
             _context = context;
         }
+
+        public async Task<IQueryable<Instructor>> GetAll()
+        {
+            return  _context.Instructors.Include(x => x.AppUser).Include(x => x.Ratings).AsQueryable();
+        }
         public async Task<Instructor> AddInstructorAsync(Instructor instructor)
         {
             _context.Instructors.Add(instructor);
@@ -59,5 +64,7 @@ namespace DanceConnect.Server.Services
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

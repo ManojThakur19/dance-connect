@@ -3,12 +3,23 @@
     <img src="../../../assets/images/logo.jpg" alt="Dance Connect Logo">
   </div>
   <nav>
-    <ul>
+    <ul ngbNav #nav="ngbNav" [activeId]="2" class="nav-tabs justify-content-center">
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
-      <li><a routerLink="/auth/reset-password">Reset Password</a></li>
-      <li><a routerLink="/auth/register">Register</a></li>
-      <li><a routerLink="/auth/login" class="btn-primary">Login</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/auth/register">Register</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/auth/login" class="btn-primary">Login</a></li>
+      <li ngbDropdown class="nav-item" role="presentation" *ngIf="isAuthenticated">
+        <button type="button" class="nav-link" ngbDropdownToggle>{{user?.name}}</button>
+        <div ngbDropdownMenu>
+          <a (click)="viewProfile()" ngbDropdownItem class="btn-primary">View Profile</a>
+          <a routerLink="/auth/reset-password" ngbDropdownItem class="btn-primary">Reset-Password</a>
+          <div class="dropdown-divider"></div>
+          <a (click)="logout()" ngbDropdownItem class="btn-primary">Log Out</a>
+        </div>
+      </li>
     </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
   </nav>
 </header>

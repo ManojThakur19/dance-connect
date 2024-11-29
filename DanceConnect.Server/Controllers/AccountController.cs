@@ -1,6 +1,8 @@
 ﻿using DanceConnect.Server.ApiModel;
 using DanceConnect.Server.Authorization;
 using DanceConnect.Server.Entities;
+using DanceConnect.Server.Response.Dtos;
+using DanceConnect.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,14 +17,18 @@ namespace DanceConnect.Server.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole<int>> roleManager;
+        private readonly IInstructorService instructorService;
+        private readonly IUserService userService;
 
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole<int>> roleManager)
+            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole<int>> roleManager,
+            IInstructorService instructorService, IUserService userService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            this.instructorService = instructorService;
+            this.userService = userService;
         }
 
         [AllowAnonymous]
@@ -43,7 +49,6 @@ namespace DanceConnect.Server.Controllers
             return Ok();
         }
 
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> LogIn([FromBody] LoginApiModel model)
@@ -63,6 +68,16 @@ namespace DanceConnect.Server.Controllers
                 {
                     return BadRequest($"Login Unsuccessful");
                 }
+                 
+                if (user.UserType == UserType.User) { 
+                    var users = await userService.GetAllUsersAsync();
+                    user.User = users.Where(x=>x.AppUserId == user.Id).FirstOrDefault();
+                }
+                else if (user.UserType == UserType.Instructor)
+                {
+                    var instructors = await instructorService.GetAllInstructorsAsync();
+                    user.Instructor = instructors.Where(x => x.AppUserId == user.Id).FirstOrDefault();
+                }
 
                 var token = new JwtTokenBuilder()
                                       .AddSecurityKey(JwtSecurityKey.Create("This is my secret key of Dance Connect application"))
@@ -75,12 +90,35 @@ namespace DanceConnect.Server.Controllers
                                       .AddExpiry(1)
                                       .Build();
 
-                return Ok(new
+                bool isAdmin = user.User is null && user.Instructor is null;
+                string userName = string.Empty;
+                string phone = string.Empty;
+                string profilePhoto = string.Empty;
+
+                if (isAdmin) {
+                    userName = "Admin";
+                }
+                else
                 {
-                    user,
-                    token,
-                    is_super_admin = false,
-                });
+                    userName = user.UserType == UserType.User ? user.User?.Name : user.Instructor?.Name;
+                    phone = user.UserType == UserType.User ? user.User?.Phone : user.Instructor?.Phone;
+                    profilePhoto = user.UserType == UserType.User ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.User?.ProfilePic}" :
+                        $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploads/{user.Instructor?.ProfilePic}";
+
+                }
+                var loginResponse = new LoginResponse()
+                {
+                    IdentityId = user.Id,
+                    Id = user.UserType == UserType.User ? user.User.UserId : user.Instructor.InstructorId,
+                    IsAdmin = isAdmin,
+                    Name = userName,
+                    Email = user.Email,
+                    Phone = phone,
+                    Role = user.UserType.ToString(),
+                    ProfilePhoto = profilePhoto,
+                    Token = token.Value
+                };
+                return Ok(loginResponse);
             }
             catch (Exception e)
             {

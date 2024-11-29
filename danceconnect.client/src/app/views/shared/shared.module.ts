@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { RatingComponent } from './rating/rating.component';
-import { NgbHighlight, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbHighlight, NgbNavModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtTokenInterceptor } from '../../common/jwt-token.interceptor';
 import { ContactUsDetailComponent } from './contact-us-detail/contact-us-detail.component';
@@ -34,7 +34,9 @@ import { ChatComponent } from './chat/chat.component';
     FormsModule, ReactiveFormsModule,
     SharedRoutingModule,
     NgbHighlight,
-    NgbRatingModule
+    NgbRatingModule,
+    NgbNavModule,
+    NgbDropdownModule
   ],
   exports: [
     HeaderComponent,

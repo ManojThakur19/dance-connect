@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
+using System.Reflection;
 
 namespace DanceConnect.Server.Controllers
 {
@@ -30,12 +32,34 @@ namespace DanceConnect.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetInstructors()
+        public async Task<IActionResult> GetInstructors([FromQuery] string? searchTerm,
+                                                        [FromQuery] string? gender,
+                                                        [FromQuery] string? city,
+                                                        [FromQuery] string? province)
         {
             try
             {
-                var instructors = await _instructorService.GetAllInstructorsAsync();
-                var instructorResponses = instructors.Select(x => new InstructorResponseDto()
+                var query = await _instructorService.GetAll();
+
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    query = query.Where(i => i.Name.Contains(searchTerm));
+                }
+                if (!string.IsNullOrWhiteSpace(gender))
+                {
+                    query = query.Where(i => i.Gender == gender);
+                }
+                if (!string.IsNullOrWhiteSpace(city))
+                {
+                    query = query.Where(i => i.City == city);
+                }
+                if (!string.IsNullOrWhiteSpace(province))
+                {
+                    query = query.Where(i => i.Province == province);
+                }
+
+                //var instructors = await _instructorService.GetAllInstructorsAsync();
+                var instructorResponses = query.ToList().Select(x => new InstructorResponseDto()
                 {
                     Id = x.InstructorId,
                     Name = x.Name,

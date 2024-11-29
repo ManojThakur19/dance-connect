@@ -12,12 +12,14 @@ import { SharedModule } from './views/shared/shared.module';
 import { HomeComponent } from './views/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SideBarComponent } from './layout/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     HomeComponent,
+    SideBarComponent,
   ],
   imports: [
     BrowserModule,

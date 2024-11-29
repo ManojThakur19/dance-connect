@@ -28,4 +28,8 @@ export class ResetPasswordComponent {
       this.router.navigate(['/auth/login']);
     });
   }
+
+  onCancel() {
+    this.router.navigate(['/home']);
+  }
 }

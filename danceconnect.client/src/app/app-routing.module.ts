@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './views/home/home.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
   {
     path: 'home',
     component : HomeComponent
@@ -18,7 +19,8 @@ const routes: Routes = [
   {
     path: 'common',
     loadChildren: () => import('./views/shared/shared.module').then(m => m.SharedModule)
-  }
+  },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
